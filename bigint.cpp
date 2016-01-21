@@ -13,10 +13,6 @@ using namespace std;
 #include "bigint.h"
 #include "debug.h"
 
-//bigint::bigint (long that): long_value (that) {
-//   DEBUGF ('~', this << " -> " << long_value)
-//}
-
 //long ctor
 bigint::bigint(long that){
     int itor = 0;
@@ -50,25 +46,10 @@ bigint::bigint(const string &that){
     this->big_value.push_back(charPtr);
 }//string ctor
 
-//bigint::bigint (const string& that) {
-//   auto itor = that.cbegin();
-//   bool isnegative = false;
-//   if (itor != that.cend() && *itor == '_') {
-//      isnegative = true;
-//      ++itor;
-//   }
-//   int newval = 0;
-//   while (itor != that.end()) newval = newval * 10 + *itor++ -'0';
-//   long_value = isnegative ? - newval : + newval;
-//   DEBUGF ('~', this << " -> " << long_value)
-//}
-
 bigint operator+ (const bigint& left, const bigint& right) {
 // return left.long_value + right.long_value;
 // Make sure this isn't a subtraction problem in disguise
-   //return bigSum(left, right);
-   
-//   return left.long_value - right.long_value;
+
     bigint ret, leftPass, rightPass;
     int carry =0;
     int leftInt, rightInt;
@@ -249,17 +230,12 @@ bigint operator+ (const bigint& right) {
 }
 
 bigint operator- (const bigint& right) {
-    //   return -right.long_value;
     bigint returnVal = right;
     returnVal.negative = !right.negative;
     return returnVal;
 }
 
 long bigint::to_long() const {
-  //  if (*this <= bigint (numeric_limits<long>::min())
-  //      or *this > bigint (numeric_limits<long>::max()))
-  //      throw range_error ("bigint__to_long: out of range");
-
     long ret = 0;
     long expnt = 0, mult = 0;
 
@@ -276,8 +252,7 @@ long bigint::to_long() const {
 bool abs_less (const bigint& left, const bigint& right) {
     int lDigits = left.big_value.size();
     int rDigits = right.big_value.size();
-    //cout << "most significant digit of " << left.bigToString() 
-    //     << " is " << left.big_value.front << "?";
+
     if ( lDigits < rDigits){
     // If there are fewer digits in left than right
         return true;
@@ -468,29 +443,6 @@ bigint::quot_rem divide (const bigint& left, const bigint& right) {
     ret = ret + twos;
 
     return {ret, bigger};
-/* if (right == 0) throw domain_error ("divide by 0");
-   using unumber = unsigned long;
-   static unumber zero = 0;
-   if (right == 0) throw domain_error ("bigint::divide");
-   unumber divisor = right.long_value;
-   unumber quotient = 0;
-   unumber remainder = left.long_value;
-   unumber power_of_2 = 1;
-   while (abs_less (divisor, remainder)) {
-      multiply_by_2 (divisor);
-      multiply_by_2 (power_of_2);
-   }
-   while (abs_less (zero, power_of_2)) {
-      if (not abs_less (remainder, divisor)) {
-         remainder = remainder - divisor;
-         quotient = quotient + power_of_2;
-      }
-      divide_by_2 (divisor);
-      divide_by_2 (power_of_2);
-   }
-   return {quotient, remainder};
-   */
-}
 
 bool dominantSign (const bigint& left, const bigint& right){
 // Returns the sign of the larger absolute bigint value
